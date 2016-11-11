@@ -19,6 +19,8 @@
 	<xsl:param name="key"/>
 	<xsl:param name="maxVersionParts" />
 	<xsl:param name="includeEnumValues" select="string('true')" />
+	<xsl:param name="baseSourceCodeUrl" />
+	<xsl:param name="requestExampleUrl" />
 
 	<!-- ============================================================================================
 	Global Variables
@@ -237,6 +239,9 @@
 					<!-- overload root titles  -->
 					<xsl:when test="$g_topicGroup='root'">
 						<xsl:value-of select="$g_topicGroup"/>
+					</xsl:when>
+					<xsl:when test="$g_topicGroup='rootGroup'">
+						<xsl:text>root</xsl:text>
 					</xsl:when>
 				</xsl:choose>
 			</xsl:attribute>
@@ -472,6 +477,9 @@
 					<xsl:when test="$g_topicGroup='root'">
 						<xsl:value-of select="$g_topicGroup"/>
 					</xsl:when>
+					<xsl:when test="$g_topicGroup='rootGroup'">
+						<xsl:text>root</xsl:text>
+					</xsl:when>
 				</xsl:choose>
 
 			</xsl:attribute>
@@ -683,7 +691,7 @@
 			<xsl:call-template name="t_putSectionInclude">
 				<xsl:with-param name="p_titleInclude" select="'title_namespaces'"/>
 				<xsl:with-param name="p_content">
-					<table id="memberList" class="members">
+					<table id="namespaceList" class="members">
 						<tr>
 							<th>
 								<include item="header_namespaceName"/>
@@ -741,7 +749,7 @@
 				<xsl:call-template name="t_putSectionInclude">
 					<xsl:with-param name="p_titleInclude" select="'tableTitle_namespace'"/>
 					<xsl:with-param name="p_content">
-						<table id="typeList" class="members">
+						<table id="namespaceList" class="members">
 							<tr>
 								<th>
 									<include item="header_namespaceName"/>
@@ -777,7 +785,7 @@
 				<xsl:call-template name="t_putSectionInclude">
 					<xsl:with-param name="p_titleInclude" select="'topicTitle_enumMembers'"/>
 					<xsl:with-param name="p_content">
-						<table id="memberList" class="members">
+						<table id="enumMemberList" class="members">
 							<tr>
 								<th class="iconColumn">
 									&#160;
@@ -881,7 +889,7 @@
 			<xsl:call-template name="t_putSectionInclude">
 				<xsl:with-param name="p_titleInclude" select="'derivedClasses'"/>
 				<xsl:with-param name="p_content">
-					<table id="memberList" class="members">
+					<table id="derivedTypeList" class="members">
 						<tr>
 							<th>
 								<include item="header_memberName"/>
@@ -940,7 +948,10 @@
 	<xsl:template name="t_putNamespaceList">
 		<xsl:param name="p_listSubgroup"/>
 
-		<table id="typeList" class="members">
+		<table class="members">
+			<xsl:attribute name="id">
+				<xsl:value-of select="concat($p_listSubgroup, 'List')"/>
+			</xsl:attribute>
 			<tr>
 				<th class="iconColumn">
 					&#160;
@@ -996,7 +1007,10 @@
 				<xsl:with-param name="p_titleInclude" select="$v_header"/>
 				<xsl:with-param name="p_toplink" select="true()"/>
 				<xsl:with-param name="p_content">
-					<table id="memberList" class="members">
+					<table class="members">
+						<xsl:attribute name="id">
+							<xsl:value-of select="concat($p_headerGroup, 'List')"/>
+						</xsl:attribute>
 						<tr>
 							<th class="iconColumn">
 								&#160;
@@ -2188,6 +2202,30 @@
 	<!-- ============================================================================================
 	Syntax
 	============================================================================================= -->
+
+	<xsl:template match="sourceContext" name="t_sourceContext">
+		<xsl:if test="$requestExampleUrl">
+			<include item="requestExample">
+				<parameter>
+					<xsl:value-of select="$requestExampleUrl"/>
+				</parameter>
+			</include>
+		</xsl:if>
+		<xsl:if test="$baseSourceCodeUrl">
+			<a target="_blank" class="button">
+				<xsl:attribute name="href">
+					<xsl:value-of select="$baseSourceCodeUrl"/>
+					<xsl:value-of select="@file"/>
+					<xsl:if test="@startLine">
+						<xsl:text>#L</xsl:text>
+						<xsl:value-of select="@startLine"/>
+					</xsl:if>
+				</xsl:attribute>
+				<includeAttribute name="title" item="sourceCodeLinkTitle" />
+				<include item="sourceCodeLinkText" />
+			</a>
+		</xsl:if>
+	</xsl:template>
 
 	<xsl:template match="parameters" name="t_parameters">
 		<xsl:call-template name="t_putSubSection">

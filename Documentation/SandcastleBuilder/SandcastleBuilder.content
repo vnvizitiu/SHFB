@@ -234,7 +234,7 @@
         <HelpKeyword index="K" term="property categories, Website" />
       </HelpKeywords>
     </Topic>
-    <Topic id="5f743a6e-3239-409a-a8c1-0bff4b5375f4" visible="True" isExpanded="true" title="MS Help Viewer Category Properties">
+    <Topic id="5f743a6e-3239-409a-a8c1-0bff4b5375f4" visible="True" title="MS Help Viewer Category Properties">
       <HelpKeywords>
         <HelpKeyword index="K" term="properties, MSHelpViewerSdkLinkType" />
         <HelpKeyword index="K" term="properties, ProductTitle" />
@@ -330,6 +330,7 @@
         <HelpKeyword index="K" term="properties, OutputPath" />
         <HelpKeyword index="K" term="properties, ComponentPath" />
         <HelpKeyword index="K" term="properties, WorkingPath" />
+        <HelpKeyword index="K" term="properties, SourceCodeBasePath" />
       </HelpKeywords>
     </Topic>
     <Topic id="d1ec47f6-b611-41cf-a78c-f68e01d6ae9e" visible="True" title="Build Component Configurations">
@@ -472,6 +473,12 @@
       <HelpKeywords>
         <HelpKeyword index="K" term="plug-ins, DBCS fix for CHM builds plug-in" />
         <HelpKeyword index="K" term="DbcsFixPlugIn, configuration options" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="1c05f8f0-71f3-420a-b546-a438c435b759" visible="True" title="Documented Entities Only Plug-In">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="plug-ins, Documented Entities Only plug-in" />
+        <HelpKeyword index="K" term="DocumentedEntitiesOnlyPlugIn, configuration options" />
       </HelpKeywords>
     </Topic>
     <Topic id="1fcdf9d3-06fb-4a7b-a584-f55b6ea5baae" visible="True" title="IntelliSense Only Plug-In">
@@ -989,12 +996,17 @@
       </Topic>
       <Topic id="6038c08c-de58-4579-a018-bdbbce3134f5" visible="True" title="GID0007: Ignoring non-XML comments file">
         <HelpKeywords>
-          <HelpKeyword index="K" term="warnings, GID0100" />
+          <HelpKeyword index="K" term="warnings, GID0007" />
         </HelpKeywords>
       </Topic>
       <Topic id="efa6ca2b-c052-4555-90d8-a9cc9093f793" visible="True" title="GID0008: Entries for the key '[id]' occur in both '[file1]' and '[file2]'">
         <HelpKeywords>
-          <HelpKeyword index="K" term="warnings, GID0101" />
+          <HelpKeyword index="K" term="warnings, GID0008" />
+        </HelpKeywords>
+      </Topic>
+      <Topic id="9d23a808-2231-44c2-ae45-61c697dda415" visible="True" title="GID0009: Circular reference detected: [member ID stack]">
+        <HelpKeywords>
+          <HelpKeyword index="K" term="warnings, GID0009" />
         </HelpKeywords>
       </Topic>
     </Topic>
@@ -1368,14 +1380,29 @@
       <HelpKeyword index="K" term="History" />
       <HelpKeyword index="K" term="Version History" />
     </HelpKeywords>
-    <Topic id="5a0130e2-a2ab-493c-a720-be43589e8b1c" visible="True" isSelected="true" title="Version 2015.10.10.0">
+    <Topic id="4a295201-9516-4914-b9d1-7db80631b42d" visible="True" isSelected="true" title="Version 2016.9.17.0">
       <HelpKeywords>
-        <HelpKeyword index="K" term="version, 2015.10.10.0" />
+        <HelpKeyword index="K" term="version, 2016.9.17.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="7603a301-1567-4f97-84ea-165d209dab7d" visible="True" title="Version 2016.5.28.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2016.5.28.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="21e5cfbd-c579-4ba9-9564-12b573d679d0" visible="True" title="Version 2016.4.9.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2016.4.9.0" />
+      </HelpKeywords>
+    </Topic>
+    <Topic id="5a0130e2-a2ab-493c-a720-be43589e8b1c" visible="True" title="Version 2015.10.10.0">
+      <HelpKeywords>
+        <HelpKeyword index="K" term="versions, 2015.10.10.0" />
       </HelpKeywords>
     </Topic>
     <Topic id="90c2bedf-fe6e-4f99-8a33-84b441701269" visible="True" title="Version 2015.7.25.0">
       <HelpKeywords>
-        <HelpKeyword index="K" term="version, 2015.7.25.0" />
+        <HelpKeyword index="K" term="versions, 2015.7.25.0" />
       </HelpKeywords>
     </Topic>
     <Topic id="006F71C5-D279-4A4C-AF34-B5CC28D560C5" visible="True" title="Versions 2014.1.26.0 Beta through 2015.5.2.0">

@@ -139,6 +139,9 @@
     <Content Include="LegacyWeb\LoadIndexKeywords.aspx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="LegacyWeb\scripts\clipboard.min.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="LegacyWeb\Search.gif">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -161,6 +164,15 @@
     <Content Include="Markdown\Content\ConceptualContent.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Markdown\Content\ja-JP\ConceptualContent.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Markdown\Content\ja-JP\ReferenceContent.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Markdown\Content\ja-JP\SharedContent.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Markdown\Content\ReferenceContent.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -175,6 +187,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Markdown\Content\SharedContent.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Markdown\Content\zh-CN\ConceptualContent.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Markdown\Content\zh-CN\ReferenceContent.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Markdown\Content\zh-CN\SharedContent.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Markdown\Data\bibliography.xml">
@@ -302,8 +323,13 @@
     </Content>
     <Content Include="Markdown\SHFBContent\en-US.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Markdown\SHFBContent\ru-RU.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Markdown\SHFBContent\zh-CN.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Markdown\Transforms\Bibliography.xsl">
@@ -332,6 +358,7 @@
     </Content>
     <Content Include="Markdown\Transforms\ReferenceUtilities.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Markdown\Transforms\SkeletonAPI.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -340,6 +367,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OpenXml\Content\ConceptualContent.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenXml\Content\ja-JP\ConceptualContent.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenXml\Content\ja-JP\ReferenceContent.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenXml\Content\ja-JP\SharedContent.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OpenXml\Content\ReferenceContent.xml">
@@ -355,6 +391,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OpenXml\Content\SharedContent.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenXml\Content\zh-CN\ConceptualContent.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenXml\Content\zh-CN\ReferenceContent.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenXml\Content\zh-CN\SharedContent.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OpenXml\DocumentParts\docProps\app.xml">
@@ -513,13 +558,16 @@
     <Content Include="OpenXml\DocumentParts\word\webSettings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OpenXml\DocumentParts\[Content_Types].xml">
+    <Content Include="OpenXml\DocumentParts\Content_Types.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OpenXml\SHFBContent\en-US.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OpenXml\SHFBContent\ru-RU.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="OpenXml\SHFBContent\zh-CN.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="OpenXml\Transforms\CodeTemplates.xsl">
@@ -595,6 +643,30 @@
     <Content Include="Shared\StopWordList\zh-CN.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="VS2010\Content\ja-JP\conceptual_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2010\Content\ja-JP\reference_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2010\Content\ja-JP\shared_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2010\Content\ja-JP\shared_content_mshc.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2010\Content\zh-CN\conceptual_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2010\Content\zh-CN\reference_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2010\Content\zh-CN\shared_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2010\Content\zh-CN\shared_content_mshc.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="VS2010\icons\CodeExample.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -646,6 +718,42 @@
     <Content Include="VS2013\Content\fr-FR\shared_content_mshc.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="VS2013\Content\it-IT\conceptual_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\it-IT\reference_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\it-IT\shared_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\it-IT\shared_content_mshc.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\ja-JP\conceptual_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\ja-JP\reference_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\ja-JP\shared_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\ja-JP\shared_content_mshc.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\pt-BR\conceptual_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\pt-BR\reference_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\pt-BR\shared_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\pt-BR\shared_content_mshc.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="VS2013\Content\reference_content.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -667,6 +775,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="VS2013\Content\shared_content_mshc.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\zh-CN\conceptual_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\zh-CN\reference_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\zh-CN\shared_content.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Content\zh-CN\shared_content_mshc.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="VS2013\Data\bibliography.xml">
@@ -802,6 +922,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="VS2013\scripts\branding.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="VS2013\Web\scripts\clipboard.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="VS2013\SHFBContent\de-DE.xml">
@@ -1296,7 +1419,7 @@
     <Content Include="OpenXml\DocumentParts\word\_rels\document.xml.rels">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="OpenXml\DocumentParts\_rels\.rels">
+    <Content Include="OpenXml\DocumentParts\_rels\rels.xml.rels">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -1357,6 +1480,7 @@
     <None Include="VS2013\Content\de-DE\de-DE.vsspell" />
     <None Include="VS2013\Content\es-ES\es-ES.vsspell" />
     <None Include="VS2013\Content\fr-FR\fr-FR.vsspell" />
+    <None Include="VS2013\Content\it-IT\it-IT.vsspell" />
     <None Include="VS2013\Content\ru-RU\ru-RU.vsspell" />
     <None Include="VS2013\SHFBContent\SHFBContent.vsspell" />
   </ItemGroup>

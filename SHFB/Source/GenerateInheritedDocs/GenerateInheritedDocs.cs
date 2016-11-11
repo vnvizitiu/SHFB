@@ -2,26 +2,25 @@
 // System  : Sandcastle Help File Builder
 // File    : GenerateInheritedDocs.cs
 // Author  : Eric Woodruff  (Eric@EWoodruff.us)
-// Updated : 03/27/2013
-// Note    : Copyright 2008-2013, Eric Woodruff, All rights reserved
+// Updated : 08/23/2016
+// Note    : Copyright 2008-2016, Eric Woodruff, All rights reserved
 // Compiler: Microsoft Visual C#
 //
 // This file contains the console mode tool that scans XML comments files for <inheritdoc /> tags and produces a
 // new XML comments file containing the inherited documentation for use by Sandcastle.
 //
 // This code is published under the Microsoft Public License (Ms-PL).  A copy of the license should be
-// distributed with the code.  It can also be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
+// distributed with the code and can be found at the project website: https://GitHub.com/EWSoftware/SHFB.  This
 // notice, the author's name, and all copyright notices must remain intact in all applications, documentation,
 // and source files.
 //
-// Version     Date     Who  Comments
+//    Date     Who  Comments
 // ==============================================================================================================
-// 1.6.0.5  02/27/2008  EFW  Created the code
-// 1.8.0.0  07/14/2008  EFW  Added support for running as an MSBuild task
-// 1.9.3.4  01/23/2012  EFW  Added support for auto-documenting attached properties and events.  Also added
-//                           support for utilizing AttachedPropertyComments and AttachedEventComments elements
-//                           to provide comments for attached properties and events that differ from the
-//                           comments on the backing fields.
+// 02/27/2008  EFW  Created the code
+// 07/14/2008  EFW  Added support for running as an MSBuild task
+// 01/23/2012  EFW  Added support for auto-documenting attached properties and events.  Also added support for
+//                  utilizing AttachedPropertyComments and AttachedEventComments elements to provide comments
+//                  for attached properties and events that differ from the comments on the backing fields.
 //===============================================================================================================
 
 using System;
@@ -134,7 +133,7 @@ namespace SandcastleBuilder.InheritedDocumentation
             }
             catch(Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Debug.WriteLine(ex.ToString());
                 success = false;
 
                 Console.WriteLine("SHFB: Error GID0001: Unexpected error while generating inherited " +
@@ -142,7 +141,7 @@ namespace SandcastleBuilder.InheritedDocumentation
             }
 
 #if DEBUG
-            if(System.Diagnostics.Debugger.IsAttached)
+            if(Debugger.IsAttached)
             {
                 Console.WriteLine("Hit ENTER to exit...");
                 Console.ReadLine();
@@ -391,22 +390,26 @@ namespace SandcastleBuilder.InheritedDocumentation
             XmlAttribute cref, filter;
             string name, ctorName, baseMemberName;
             bool commentsFound;
+            int idx;
 
             name = member.SelectSingleNode("@name").Value;
 
-            // Check for a circular reference
+            // Check for a circular reference.  If found, issue a warning and return the comments as-is.
+            // Typically, this is a problem but it may be legitimate if someone inherits comments from another
+            // element within the same member comments (i.e. inheriting a span or paragraph from the summary
+            // in the remarks element).
             if(memberStack.Contains(name))
             {
-                StringBuilder sb = new StringBuilder("Circular reference detected.\r\n" +
-                    "Documentation inheritance stack:\r\n");
+                StringBuilder sb = new StringBuilder("Circular reference detected: ");
 
-                sb.AppendFormat("    {0}: {1}", memberStack.Count + 1, name);
-                sb.Append("\r\n");
+                idx = memberStack.Count;
+                sb.AppendFormat("{0}: {1}", idx + 1, name);
 
-                while(memberStack.Count != 0)
-                    sb.AppendFormat("    {0}: {1}\r\n", memberStack.Count, memberStack.Pop());
+                foreach(var m in memberStack.ToArray())
+                    sb.AppendFormat(" <-- {0}: {1}", idx--, m);
 
-                throw new InheritedDocsException(sb.ToString());
+                Console.WriteLine("SHFB: Warning GID0009: {0}", sb);
+                return;
             }
 
             memberStack.Push(name);
@@ -613,18 +616,20 @@ namespace SandcastleBuilder.InheritedDocumentation
         //=====================================================================
 
         /// <summary>
-        /// This is used to generate the inherited documentation for the given member.  Only tags at the root
-        /// level are processed here.
+        /// This is used to generate the inherited documentation nested within other documentation elements of
+        /// the given member.  Only nested tags are processed here.
         /// </summary>
         /// <param name="member">The member for which to inherit documentation</param>
-        /// <remarks>This will recursively expand documentation if a base member's comments are present in the
-        /// generation list.</remarks>
+        /// <remarks>Unlike root level elements, if the inherited nested documentation contains <c>inheritdoc</c>
+        /// tags, they will not be handled recursively.  Note that common elements such as <c>param</c> are
+        /// inherited automatically at the root level so there's no need to use <c>inheritdoc</c> within them
+        /// unless you want to include something specific using a filter.</remarks>
         private static void InheritNestedDocumentation(XmlNode member)
         {
             StringBuilder sb = new StringBuilder(256);
             XPathNavigator baseMember;
             XmlNode copyMember, content, newNode;
-            XmlAttribute cref, filter;
+            XmlAttribute cref, filter, autoFilter;
             string name;
 
             foreach(XmlNode inheritTag in member.SelectNodes(".//inheritdoc"))
@@ -649,6 +654,7 @@ namespace SandcastleBuilder.InheritedDocumentation
                 filter = inheritTag.Attributes["select"];
 
                 if(filter != null)
+                {
                     if(filter.Value[0] != '/')
                         sb.AppendFormat("/{0}", filter.Value);
                     else
@@ -658,6 +664,21 @@ namespace SandcastleBuilder.InheritedDocumentation
                         // the filter.
                         sb.Remove(0, sb.Length);
                         sb.Append(filter.Value.Substring(1));
+                    }
+                }
+                else
+                    if(inheritTag.ParentNode.Name != "member")
+                    {
+                        // If nested within an element that has a cref or name attribute, apply that as an
+                        // automatic filter.  If not, we may end up pulling in comments from unrelated elements
+                        // such as other parameters.
+                        autoFilter = inheritTag.ParentNode.Attributes["cref"];
+
+                        if(autoFilter == null)
+                            autoFilter = inheritTag.ParentNode.Attributes["name"];
+
+                        if(autoFilter != null)
+                            sb.AppendFormat("[@{0}=\"{1}\"]", autoFilter.Name, autoFilter.Value);
                     }
 
                 // Inherit from a member other than the base?
