@@ -13,6 +13,9 @@
 // converted to type metadata.
 // 08/06/2014 - EFW - Added code to write out values for literal (constant) fields.
 // 08/23/2016 - EFW - Added support for writing out source code context
+// 03/17/2017 - EFW - Added support for value tuples
+// 05/26/2017 - EFW - Fixed up issues with unsigned long enumerated types and duplicate flag values
+// 05/30/2017 - JRC - Fixed issue with negative enums
 
 using System;
 using System.Collections.Generic;
@@ -326,7 +329,7 @@ namespace Microsoft.Ddue.Tools
                 {
                     // Look for an exact match by type name
                     matches = matches.Where(m => Path.GetFileNameWithoutExtension(m).EndsWith(searchPattern,
-                        StringComparison.Ordinal)).ToList();
+                        StringComparison.OrdinalIgnoreCase)).ToList();
 
                     if(matches.Count != 1)
                     {
@@ -354,7 +357,8 @@ namespace Microsoft.Ddue.Tools
                         sourceFile = matches[0];
                 }
                 else
-                    if(matches.Count == 1)
+                    if(matches.Count == 1 && Path.GetFileNameWithoutExtension(matches[0]).EndsWith(searchPattern,
+                      StringComparison.OrdinalIgnoreCase))
                         sourceFile = matches[0];
 
                 if(sourceFile != null && sourceFile.StartsWith(this.SourceCodeBasePath, StringComparison.OrdinalIgnoreCase))
@@ -563,14 +567,48 @@ namespace Microsoft.Ddue.Tools
 
                 if(field.DefaultValue != null)
                 {
-                    long fieldValue = Convert.ToInt64(field.DefaultValue.Value, CultureInfo.InvariantCulture);
+                   long fieldValue;
 
-                    // If a single field matches, return it.  Otherwise return all fields that are in value.
+                    if(field.DefaultValue.Value is ulong)
+                        fieldValue = unchecked((long)(ulong)field.DefaultValue.Value);
+                    else
+                        fieldValue = Convert.ToInt64(field.DefaultValue.Value, CultureInfo.InvariantCulture);
+
+                    // If a single field matches, return it.  Otherwise return all fields that are in the value
+                    // except zero.
                     if(fieldValue == value)
                         return new[] { field };
 
-                    if((fieldValue & value) == fieldValue)
+                    if(fieldValue != 0 && (fieldValue & value) == fieldValue)
                         list.Add(field);
+                }
+            }
+
+            // Remove duplicates that are in combo values. For example, in the set A, B, AplusB, remove A and B
+            // because they are present in the combined value AplusB).
+            for(int i = 0; i < list.Count; i++)
+            {
+                long fieldValue;
+
+                if(list[i].DefaultValue.Value is ulong)
+                    fieldValue = unchecked((long)(ulong)list[i].DefaultValue.Value);
+                else
+                    fieldValue = Convert.ToInt64(list[i].DefaultValue.Value, CultureInfo.InvariantCulture);
+
+                if(list.Skip(i + 1).Any(f =>
+                {
+                    long compare;
+
+                    if (f.DefaultValue.Value is ulong)
+                        compare = unchecked((long)(ulong)f.DefaultValue.Value);
+                    else
+                        compare = Convert.ToInt64(f.DefaultValue.Value, CultureInfo.InvariantCulture);
+
+                    return ((fieldValue & compare) == fieldValue);
+                }))
+                {
+                    list.RemoveAt(i);
+                    i--;
                 }
             }
 
@@ -774,10 +812,17 @@ namespace Microsoft.Ddue.Tools
 
                 case NodeType.DelegateNode:
                     DelegateNode handler = (DelegateNode)type;
+                    AttributeList retValAttributes = null;
+
+                    var endInvoke = handler.Members.FirstOrDefault(m => m.Name.Name.Equals("EndInvoke",
+                        StringComparison.Ordinal)) as Method;
+
+                    if(endInvoke != null)
+                        retValAttributes = endInvoke.ReturnAttributes;
 
                     this.WriteGenericParameters(handler.TemplateParameters);
                     this.WriteParameters(handler.Parameters);
-                    this.WriteReturnValue(handler.ReturnType);
+                    this.WriteReturnValue(handler.ReturnType, retValAttributes);
                     break;
 
                 case NodeType.EnumNode:
@@ -1035,7 +1080,7 @@ namespace Microsoft.Ddue.Tools
                         this.WriteSourceContext(member.DeclaringType.SourceContext, member.DeclaringType.SourceContext);
 
                     this.WriteFieldData(field);
-                    this.WriteReturnValue(field.Type);
+                    this.WriteReturnValue(field.Type, field.Attributes);
 
                     // Write enumeration and literal (constant) field values
                     if(field.DeclaringType.NodeType == NodeType.EnumNode)
@@ -1064,7 +1109,7 @@ namespace Microsoft.Ddue.Tools
                         this.WriteGenericParameters(method.TemplateParameters);
 
                     this.WriteParameters(method.Parameters);
-                    this.WriteReturnValue(method.ReturnType);
+                    this.WriteReturnValue(method.ReturnType, method.ReturnAttributes);
                     this.WriteImplementedMembers(method.GetImplementedMethods());
 
                     if(method.SecurityAttributes != null)
@@ -1083,7 +1128,7 @@ namespace Microsoft.Ddue.Tools
 
                     this.WritePropertyData(property);
                     this.WriteParameters(property.Parameters);
-                    this.WriteReturnValue(property.Type);
+                    this.WriteReturnValue(property.Type, property.Attributes);
                     this.WriteImplementedMembers(property.GetImplementedProperties());
                     break;
 
@@ -1487,13 +1532,77 @@ namespace Microsoft.Ddue.Tools
         /// Write out a type reference
         /// </summary>
         /// <param name="type">The type to reference</param>
-        public void WriteTypeReference(TypeNode type)
+        /// <param name="elementName">An element name if the type reference is part of a type such as
+        /// <c>ValueTuple</c> or null if not.</param>
+        /// <param name="attributes">An optional list of attributes to check for tuple element names</param>
+        public void WriteTypeReference(TypeNode type, string elementName = null, AttributeList attributes = null)
         {
             if(type == null)
                 throw new ArgumentNullException("type");
 
-            this.WriteStartTypeReference(type);
+            string[] names = null;
+
+            if(attributes != null)
+            {
+                // If the return value is a tuple, see if we can output the element names so that the
+                // presentation styles can output them in the expected format.
+                var tupleElementNames = attributes.FirstOrDefault(a => a.Type.Name.Name == "TupleElementNamesAttribute");
+
+                if(tupleElementNames != null && tupleElementNames.Expressions.Count != 0)
+                {
+                    var exp = tupleElementNames.Expressions[0] as Literal;
+
+                    if(exp != null)
+                    {
+                        names = exp.Value as string[];
+
+                        if(names != null)
+                            this.SetElementNames(type, names);
+                    }
+                }
+            }
+
+            this.WriteStartTypeReference(type, elementName);
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// This is used to set the element names on a <c>ValueTuple</c>
+        /// </summary>
+        /// <param name="type">The type in which to find the <c>ValueTuple</c> type</param>
+        /// <param name="names">The tuple element names</param>
+        private bool SetElementNames(TypeNode type, string[] names)
+        {
+            if(type.FullName.StartsWith("System.ValueTuple`", StringComparison.Ordinal))
+            {
+                TypeNodeList arguments = type.TemplateArguments;
+
+                if(arguments != null)
+                {
+                    // Use a simple string enumerator.  Only one array is specified even though the elements may
+                    // span more than one declaration.  This is the simplest way handle them across all such
+                    // declarations.
+                    var collection = new System.Collections.Specialized.StringCollection();
+                    collection.AddRange(names);
+                    type.ElementNames = collection.GetEnumerator();
+                    return true;
+                }
+
+                return false;
+            }
+
+            // Search the types recursively until we find it (i.e. IEnumerable<ValueTuple>)
+            if(type.IsGeneric)
+            {
+                TypeNodeList arguments = type.TemplateArguments;
+
+                if(arguments != null && arguments.Count != 0)
+                    foreach(var arg in arguments)
+                        if(this.SetElementNames(arg, names))
+                            return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -1729,6 +1838,9 @@ namespace Microsoft.Ddue.Tools
 
                     writer.WriteStartElement("enumValue");
 
+                    if(value is ulong)
+                        value = unchecked((long)(ulong)value);
+
                     foreach(var field in GetAppliedFields(enumeration, Convert.ToInt64(value, CultureInfo.InvariantCulture)))
                     {
                         writer.WriteStartElement("field");
@@ -1800,7 +1912,7 @@ namespace Microsoft.Ddue.Tools
             if(parameter.IsOptional)
                 this.WriteBooleanAttribute("optional", true);
 
-            this.WriteTypeReference(parameter.Type);
+            this.WriteTypeReference(parameter.Type, null, parameter.Attributes);
 
             if(parameter.IsOptional && parameter.DefaultValue != null)
                 this.WriteExpression(parameter.DefaultValue);
@@ -1916,7 +2028,9 @@ namespace Microsoft.Ddue.Tools
         /// Write a starting type reference element based on the type node
         /// </summary>
         /// <param name="type">The type for which to write a starting type reference</param>
-        private void WriteStartTypeReference(TypeNode type)
+        /// <param name="elementName">An element name if the type reference is part of a type such as
+        /// <c>ValueTuple</c> or null if not.</param>
+        private void WriteStartTypeReference(TypeNode type, string elementName = null)
         {
             switch(type.NodeType)
             {
@@ -1970,6 +2084,9 @@ namespace Microsoft.Ddue.Tools
                     {
                         writer.WriteStartElement("type");
 
+                        if(!String.IsNullOrWhiteSpace(elementName))
+                            writer.WriteAttributeString("elementName", elementName);
+
                         if(type.IsGeneric)
                         {
                             TypeNode template = type.GetTemplateType();
@@ -1986,11 +2103,18 @@ namespace Microsoft.Ddue.Tools
                                 writer.WriteStartElement("specialization");
 
                                 foreach(var arg in arguments)
-                                    this.WriteTypeReference(arg);
+                                {
+                                    string nextElementName = null;
+
+                                    // If we've got element names, pull the next one off the list and use it
+                                    if(type.ElementNames != null && type.ElementNames.MoveNext())
+                                        nextElementName = type.ElementNames.Current;
+
+                                    this.WriteTypeReference(arg, nextElementName);
+                                }
 
                                 writer.WriteEndElement();
                             }
-
                         }
                         else
                         {
@@ -2032,12 +2156,13 @@ namespace Microsoft.Ddue.Tools
         /// Write out a field or return value type
         /// </summary>
         /// <param name="type">The return value type</param>
-        private void WriteReturnValue(TypeNode type)
+        /// <param name="attributes">The return value attributes if any</param>
+        private void WriteReturnValue(TypeNode type, AttributeList attributes)
         {
             if(type.FullName != "System.Void")
             {
                 writer.WriteStartElement("returns");
-                this.WriteTypeReference(type);
+                this.WriteTypeReference(type, null, attributes);
                 writer.WriteEndElement();
             }
         }

@@ -134,6 +134,7 @@
     <item id="title_relatedTopics">参见</item>
     <item id="title_extensionUsage">备注</item>
     <item id="text_extensionUsage">在 Visual Basic 和 C# 中，这个方法可以当成为类型{0}的实例方法来调用。在采用实例方法语法调用这个方法时，请省略第一个参数。请参考 <a href="http://msdn.microsoft.com/en-us/library/bb384936.aspx" target="_blank">扩展方法 (Visual Basic)</a> 或 <a href="http://msdn.microsoft.com/en-us/library/bb383977.aspx" target="_blank">扩展方法 (C# 编程指南)</a> 获取更多信息。</item>
+    <item id="text_moreInheritance">更多...</item>
 
     <!-- table headers -->
     <item id="header_namespaceName">命名空间</item>
@@ -189,10 +190,6 @@
     <item id="text_staticNotThreadSafe">Static members of this type are not safe for multi-threaded operations. </item>
     <item id="text_instanceThreadSafe">Instance members of this type are safe for multi-threaded operations. </item>
     <item id="text_instanceNotThreadSafe">Instance members of this type are not safe for multi-threaded operations. </item>
-
-    <item id="text_NotesForImplementers">Notes to Implementers</item>
-    <item id="text_NotesForCallers">Notes to Callers</item>
-    <item id="text_NotesForInheritors">Notes to Inheritors</item>
 
     <!-- Boilerplate intro to member list tables -->
     <item id="genericExposedMembersTableText">The {0} generic type exposes the following members.</item>

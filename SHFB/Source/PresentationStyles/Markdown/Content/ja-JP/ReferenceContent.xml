@@ -134,6 +134,7 @@
 	<item id="title_relatedTopics">関連項目</item>
 	<item id="title_extensionUsage">使用上の注意</item>
 	<item id="text_extensionUsage">Visual Basic と C#では、{0}型のオブジェクトのインスタンスメソッドのようにこのメソッドを呼び出せます。このメソッドを呼び出すためにインスタンスメソッド構文を使う場合、最初のパラメーターを省略します。詳細は、<a href="http://msdn.microsoft.com/ja-jp/library/bb384936.aspx" target="_blank">拡張メソッド(Visual Basic)</a>または<a href="http://msdn.microsoft.com/ja-jp/library/bb383977.aspx" target="_blank">拡張メソッド(C# プログラミング ガイド)</a>を参照してください。</item>
+	<item id="text_moreInheritance">More...</item>
 
 	<!-- Table headers -->
 	<item id="header_namespaceName">名前空間</item>
@@ -189,10 +190,6 @@
   <item id="text_staticNotThreadSafe">この型のstaticメンバーはスレッドセーフではありません。</item>
   <item id="text_instanceThreadSafe">この型のインスタンスメンバーはスレッドセーフです。</item>
   <item id="text_instanceNotThreadSafe">この型のインスタンスメンバーはスレッドセーフではありません。</item>
-  
-  <item id="text_NotesForImplementers">実装時の注意</item>
-  <item id="text_NotesForCallers">利用時の注意</item>
-  <item id="text_NotesForInheritors">継承する場合の注意</item>
   
   <!-- Boilerplate intro to member list tables -->
   <item id="genericExposedMembersTableText">{0} ジェネリック型は下記のメンバーを公開します。</item>

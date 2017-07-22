@@ -202,10 +202,6 @@
   <item id="text_instanceThreadSafe">この型のインスタンスメンバーはスレッドセーフです。</item>
   <item id="text_instanceNotThreadSafe">この型のインスタンスメンバーはスレッドセーフではありません。</item>
   
-  <item id="text_NotesForImplementers">実装時の注意</item>
-  <item id="text_NotesForCallers">利用時の注意</item>
-  <item id="text_NotesForInheritors">継承する場合の注意</item>
-  
   <!-- boilerplate intro to member list tables -->
   <item id="genericExposedMembersTableText">{0} ジェネリック型は下記のメンバーを公開します。</item>
   <item id="exposedMembersTableText">{0} 型は下記のメンバーを公開します。</item>	
@@ -224,7 +220,7 @@
   
 	<!-- Host protection boilerplate text -->
   <item id="text_hostProtectionAttribute">ホスト保護属性。</item>
-	<item id="boilerplate_hostProtectionAttribute">この型またはメンバーに適用される<referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" preferprefer-overload="true" />属性が持つ<referenceLink target="P:System.Security.Permissions.HostProtectionAttribute.Resources" prefer-overload="true" />プロパティの値は{1}です。この<referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" />は(アイコンのダブルクリック、コマンドの入力、またはブラウザーへのURLの入力により起動するような)デスクトップアプリケーションに影響を与えません。
+	<item id="boilerplate_hostProtectionAttribute">この型またはメンバーに適用される<referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" />属性が持つ<referenceLink target="P:System.Security.Permissions.HostProtectionAttribute.Resources" prefer-overload="true" />プロパティの値は{1}です。この<referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" />は(アイコンのダブルクリック、コマンドの入力、またはブラウザーへのURLの入力により起動するような)デスクトップアプリケーションに影響を与えません。
                  より詳しくは、<referenceLink target="T:System.Security.Permissions.HostProtectionAttribute" prefer-overload="true" />クラスまたは<a href="http://msdn.microsoft.com/ja-jp/library/ms172338.aspx" target="_blank">SQL Server プログラミングとホスト保護属性</a>を参照してください。</item>
 
 	<!-- Obsolete boilerplate text -->
